@@ -1,4 +1,5 @@
 import readline from 'node:readline/promises';
+import { getUsername, parseInput } from './modules/utils.js';
 
 try {
   const username = getUsername();
@@ -14,6 +15,7 @@ try {
   rl.prompt();
 
   rl.on('line', (line) => {
+    console.log(parseInput(line));
     rl.prompt();
   });
 
@@ -23,14 +25,4 @@ try {
   });
 } catch (e) {
   console.log(e.message);
-}
-
-function getUsername() {
-  try {
-    const argv = process.argv[2];
-    const username = argv.match(/^--username=(\w+)$/)[1];
-    if (username.trim() == '') throw new Error();
-  } catch {
-    throw new Error('The --username key was not entered. Process interrupted');
-  }
 }

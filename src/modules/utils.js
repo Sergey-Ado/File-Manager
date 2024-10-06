@@ -1,0 +1,36 @@
+export function getUsername() {
+  try {
+    const argv = process.argv[2];
+    const username = argv.match(/^--username=(\w+)$/)[1];
+    if (username.trim() == '') throw new Error();
+  } catch {
+    throw new Error('The --username key was not entered. Process interrupted');
+  }
+}
+
+export function parseInput(str) {
+  const res = new Array(3).fill(undefined);
+  str = str.trim();
+
+  for (let i = 0; i < 3; i++) {
+    let member = getMember(str);
+    if (!member.result) return res;
+    res[i] = member.result;
+    str = str.slice(member.newIndex).trim();
+  }
+
+  return res;
+}
+
+function getMember(str) {
+  if (str.length == 0) return { result: undefined, newIndex: -1 };
+  if (str[0] == '"') {
+    let i = str.indexOf('"', 1);
+    if (i == -1) return { result: undefined, newIndex: -1 };
+    return { result: str.slice(1, i), newIndex: i + 1 };
+  } else {
+    let i = str.indexOf(' ');
+    if (i == -1) return { result: str, newIndex: str.length };
+    return { result: str.slice(0, i), newIndex: i };
+  }
+}
