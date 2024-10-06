@@ -1,10 +1,12 @@
 import readline from 'node:readline/promises';
-import { getUsername, parseInput } from './modules/utils.js';
+import { getUsername, parseInput, showCurrentDir } from './modules/utils.js';
+import { controller } from './modules/controller.js';
 
 try {
   const username = getUsername();
 
   console.log(`Welcome to the File Manager, ${username}!`);
+  showCurrentDir();
 
   const rl = readline.createInterface({
     input: process.stdin,
@@ -14,8 +16,14 @@ try {
 
   rl.prompt();
 
-  rl.on('line', (line) => {
-    console.log(parseInput(line));
+  rl.on('line', async (line) => {
+    const parse = parseInput(line);
+    if (parse[0] == '.exit') {
+      rl.close();
+      return;
+    }
+    await controller(parse);
+    showCurrentDir();
     rl.prompt();
   });
 

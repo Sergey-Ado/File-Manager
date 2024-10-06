@@ -1,8 +1,12 @@
+import { homedir } from 'node:os';
+import { isAbsolute, resolve, join } from 'node:path';
+
 export function getUsername() {
   try {
     const argv = process.argv[2];
     const username = argv.match(/^--username=(\w+)$/)[1];
     if (username.trim() == '') throw new Error();
+    return username;
   } catch {
     throw new Error('The --username key was not entered. Process interrupted');
   }
@@ -33,4 +37,23 @@ function getMember(str) {
     if (i == -1) return { result: str, newIndex: str.length };
     return { result: str.slice(0, i), newIndex: i };
   }
+}
+
+let currentDir = homedir();
+
+export function showCurrentDir() {
+  console.log(`You are currently in ${currentDir}`);
+}
+
+// export function getCurrentDir() {
+//   return currentDir;
+// }
+
+export function setCurrentDir(newCurrentDir) {
+  currentDir = newCurrentDir;
+}
+
+export function getAbsolutePath(path) {
+  if (isAbsolute(path)) return path;
+  else return join(currentDir, path);
 }
