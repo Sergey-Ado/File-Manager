@@ -1,6 +1,7 @@
 // import { ls, up } from './navigation.js';
 import * as nav from './navigation.js';
 import * as fs from './file-system.js';
+import { os } from './os.js';
 
 // export async function controller(parse) {
 //   console.log(parse);
@@ -33,4 +34,4 @@ export async function controller(parse) {
 //   ls,
 // };
 
-const functionList = { ...nav, ...fs };
+const functionList = { ...nav, ...fs, os };
