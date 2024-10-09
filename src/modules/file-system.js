@@ -82,9 +82,9 @@ async function copyRemove(pathToFile, pathToNewDir, del = false) {
 }
 
 export async function rm(pathToFile) {
+  if (!pathToFile) throw new Error('Invalid input');
   try {
     pathToFile = getAbsolutePath(pathToFile);
-    console.log(pathToFile);
     await access(pathToFile).then(async () => {
       await remove(pathToFile);
     });

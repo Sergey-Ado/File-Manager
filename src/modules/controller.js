@@ -1,21 +1,7 @@
-// import { ls, up } from './navigation.js';
 import * as nav from './navigation.js';
 import * as fs from './file-system.js';
 import { os } from './os.js';
-
-// export async function controller(parse) {
-//   console.log(parse);
-//   switch (parse[0]) {
-//     case 'up':
-//       await up();
-//       break;
-//     case 'ls':
-//       await ls();
-//       break;
-//     default:
-//       console.log('Invalid input');
-//   }
-// }
+import { hash } from './hash.js';
 
 export async function controller(parse) {
   try {
@@ -29,9 +15,4 @@ export async function controller(parse) {
   }
 }
 
-// const functionList = {
-//   up,
-//   ls,
-// };
-
-const functionList = { ...nav, ...fs, os };
+const functionList = { ...nav, ...fs, os, hash };

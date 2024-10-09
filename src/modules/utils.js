@@ -3,8 +3,10 @@ import { isAbsolute, resolve, join, parse } from 'node:path';
 
 export function getUsername() {
   try {
-    const argv = process.argv[2];
-    const username = argv.match(/^--username=(\w+)$/)[1];
+    const username =
+      process.env.npm_config_username ||
+      process.argv[2].match(/^--username=(\w+)$/)[1] ||
+      '';
     if (username.trim() == '') throw new Error();
     return username;
   } catch {

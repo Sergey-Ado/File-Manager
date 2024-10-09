@@ -1,0 +1,23 @@
+import { createReadStream } from 'node:fs';
+import { access } from 'node:fs/promises';
+import { createHash } from 'node:crypto';
+import { getAbsolutePath } from './utils.js';
+
+export async function hash(pathToFile) {
+  if (!pathToFile) throw new Error('Invalid input');
+  try {
+    pathToFile = getAbsolutePath(pathToFile);
+    await access(pathToFile);
+    await new Promise((res) => {
+      const readStream = createReadStream(pathToFile);
+      const hash = createHash('sha256');
+      readStream.pipe(hash);
+      readStream.on('end', () => {
+        console.log(hash.digest('hex'));
+        res();
+      });
+    });
+  } catch {
+    throw new Error('Operation failed');
+  }
+}
