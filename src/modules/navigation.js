@@ -6,12 +6,14 @@ export async function up() {
   setCurrentDir(dir);
 }
 
-export async function cd(path) {
-  if (/^[a-zA-Z]:$/.test(path)) path += '/';
-  path = getAbsolutePath(path);
-  await access(path).then(
-    () => setCurrentDir(path),
-    () => console.log('Operation failed')
+export async function cd(pathToDir) {
+  if (!pathToDir) throw new Error('Operation failed');
+  pathToDir = getAbsolutePath(pathToDir);
+  await access(pathToDir).then(
+    () => setCurrentDir(pathToDir),
+    () => {
+      throw new Error('Operation failed');
+    }
   );
 }
 
@@ -25,6 +27,5 @@ export async function ls() {
     });
   });
   listOutput.sort((a, b) => (a.Type < b.Type ? -1 : 1));
-  console.log(listOutput);
   console.table(listOutput);
 }

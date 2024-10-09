@@ -1,5 +1,5 @@
 import { homedir } from 'node:os';
-import { isAbsolute, resolve, join } from 'node:path';
+import { isAbsolute, resolve, join, parse } from 'node:path';
 
 export function getUsername() {
   try {
@@ -45,15 +45,20 @@ export function showCurrentDir() {
   console.log(`You are currently in ${currentDir}`);
 }
 
-// export function getCurrentDir() {
-//   return currentDir;
-// }
+export function getCurrentDir() {
+  return currentDir;
+}
 
 export function setCurrentDir(newCurrentDir) {
   currentDir = newCurrentDir;
 }
 
 export function getAbsolutePath(path) {
+  if (/^[a-zA-Z]:$/.test(path)) path += '/';
   if (isAbsolute(path)) return path;
   else return join(currentDir, path);
+}
+
+export function isFilename(filename) {
+  return parse(filename).dir == '';
 }

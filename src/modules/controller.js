@@ -1,5 +1,6 @@
 // import { ls, up } from './navigation.js';
 import * as nav from './navigation.js';
+import * as fs from './file-system.js';
 
 // export async function controller(parse) {
 //   console.log(parse);
@@ -21,6 +22,7 @@ export async function controller(parse) {
     if (!functionList.hasOwnProperty(parse[0]))
       throw new Error('Invalid input');
     await functionList[parse[0]](parse[1], parse[2]);
+    console.log('\n');
   } catch (e) {
     console.log(e.message);
   }
@@ -31,4 +33,4 @@ export async function controller(parse) {
 //   ls,
 // };
 
-const functionList = { ...nav };
+const functionList = { ...nav, ...fs };
