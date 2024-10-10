@@ -7,7 +7,7 @@ export async function up() {
 }
 
 export async function cd(pathToDir) {
-  if (!pathToDir) throw new Error('Operation failed');
+  if (!pathToDir) throw new Error('Invalid input');
   pathToDir = getAbsolutePath(pathToDir);
   await access(pathToDir).then(
     () => setCurrentDir(pathToDir),
