@@ -26,6 +26,13 @@ export async function ls() {
       Type: element.isFile() ? 'file' : 'directory',
     });
   });
-  listOutput.sort((a, b) => (a.Type < b.Type ? -1 : 1));
+  listOutput.sort(sortFn);
   console.table(listOutput);
+}
+
+function sortFn(a, b) {
+  if (a.Type < b.Type) return -1;
+  if (a.Type > b.Type) return 1;
+
+  return a.Name < b.Name ? -1 : 1;
 }

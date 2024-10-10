@@ -14,11 +14,8 @@ export async function decompress(pathToFile, pathToDestination) {
 async function zipFunction(pathToFile, pathToDestination, method = 'compress') {
   if (!pathToFile || !pathToDestination) throw new Error('Invalid input');
   try {
-    console.log(pathToFile, pathToDestination);
-
     pathToFile = getAbsolutePath(pathToFile);
     pathToDestination = getAbsolutePath(pathToDestination);
-    console.log(pathToFile, pathToDestination);
     await access(pathToDestination).then(
       () => {
         throw new Error();

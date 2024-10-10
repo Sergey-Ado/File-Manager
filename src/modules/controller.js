@@ -12,7 +12,7 @@ export async function controller(parse) {
     await functionList[parse[0]](parse[1], parse[2]);
     console.log('\n');
   } catch (e) {
-    console.log(e.message);
+    console.error(e.message);
   }
 }
 

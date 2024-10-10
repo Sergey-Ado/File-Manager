@@ -32,5 +32,5 @@ try {
     console.log(`Thank you for using File Manager, ${username}, goodbye!`);
   });
 } catch (e) {
-  console.log(e.message);
+  console.error(e.message);
 }

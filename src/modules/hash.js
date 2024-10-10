@@ -1,5 +1,4 @@
 import { createReadStream } from 'node:fs';
-import { access } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 import { getAbsolutePath } from './utils.js';
 
@@ -7,7 +6,6 @@ export async function hash(pathToFile) {
   if (!pathToFile) throw new Error('Invalid input');
   try {
     pathToFile = getAbsolutePath(pathToFile);
-    await access(pathToFile);
     await new Promise((res, rej) => {
       const readStream = createReadStream(pathToFile);
       const hash = createHash('sha256');

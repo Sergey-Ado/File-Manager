@@ -7,7 +7,6 @@ export async function cat(pathToFile) {
   if (!pathToFile) throw new Error('Invalid input');
   try {
     pathToFile = getAbsolutePath(pathToFile);
-    await access(pathToFile);
     await new Promise((res, rej) => {
       const input = createReadStream(pathToFile);
       input.pipe(process.stdout);
@@ -21,33 +20,38 @@ export async function cat(pathToFile) {
 
 export async function add(newFilename) {
   if (!newFilename) throw new Error('Invalid input');
-  if (!isFilename(newFilename)) throw new Error('Operation failed');
-  const pathToFile = getAbsolutePath(newFilename);
-  await access(pathToFile).then(
-    () => {
-      throw new Error('Operation failed');
-    },
-    async () => {
-      await writeFile(pathToFile, '');
-    }
-  );
+  try {
+    if (!isFilename(newFilename)) throw new Error();
+    const pathToFile = getAbsolutePath(newFilename);
+    await access(pathToFile).then(
+      () => {
+        throw new Error();
+      },
+      async () => {
+        await writeFile(pathToFile, '');
+      }
+    );
+  } catch {
+    throw new Error('Operation failed');
+  }
 }
 
 export async function rn(pathToFile, newFilename) {
   if (!pathToFile || !newFilename) throw new Error('Invalid input');
-  pathToFile = getAbsolutePath(pathToFile);
-  await access(pathToFile).catch(() => {
+  try {
+    pathToFile = getAbsolutePath(pathToFile);
+    if (!isFilename(newFilename)) throw new Error();
+    const dir = parse(pathToFile).dir;
+    const newPathToFile = join(dir, newFilename);
+    await access(newPathToFile).then(
+      () => {
+        throw new Error();
+      },
+      async () => await rename(pathToFile, newPathToFile)
+    );
+  } catch {
     throw new Error('Operation failed');
-  });
-  if (!isFilename(newFilename)) throw new Error('Operation failed');
-  const dir = parse(pathToFile).dir;
-  const newPathToFile = join(dir, newFilename);
-  await access(newPathToFile).then(
-    () => {
-      throw new Error('Operation failed');
-    },
-    async () => await rename(pathToFile, newPathToFile)
-  );
+  }
 }
 
 export async function cp(pathToFile, pathToNewDir) {
@@ -64,7 +68,6 @@ async function copyRemove(pathToFile, pathToNewDir, del = false) {
     pathToFile = getAbsolutePath(pathToFile);
     pathToNewDir = getAbsolutePath(pathToNewDir);
     const pathToNewFile = join(pathToNewDir, parse(pathToFile).base);
-    console.log(pathToNewFile);
     await access(pathToNewFile).then(
       () => {
         throw new Error('');

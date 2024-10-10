@@ -1,11 +1,11 @@
 import { homedir } from 'node:os';
-import { isAbsolute, resolve, join, parse } from 'node:path';
+import { isAbsolute, join, parse } from 'node:path';
 
 export function getUsername() {
   try {
     const username =
       process.env.npm_config_username ||
-      process.argv[2].match(/^--username=(\w+)$/)[1] ||
+      process.argv[2].match(/^--username=(.+)$/)[1] ||
       '';
     if (username.trim() == '') throw new Error();
     return username;
@@ -30,8 +30,8 @@ export function parseInput(str) {
 
 function getMember(str) {
   if (str.length == 0) return { result: undefined, newIndex: -1 };
-  if (str[0] == '"') {
-    let i = str.indexOf('"', 1);
+  if ('\'"'.indexOf(str[0]) >= 0) {
+    let i = str.indexOf(str[0], 1);
     if (i == -1) return { result: undefined, newIndex: -1 };
     return { result: str.slice(1, i), newIndex: i + 1 };
   } else {
