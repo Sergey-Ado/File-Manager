@@ -10,7 +10,10 @@ export async function cat(pathToFile) {
     await new Promise((res, rej) => {
       const input = createReadStream(pathToFile);
       input.pipe(process.stdout);
-      input.on('end', () => res());
+      input.on('end', () => {
+        console.log();
+        res();
+      });
       input.on('error', () => rej());
     });
   } catch {

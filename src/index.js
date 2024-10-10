@@ -1,4 +1,3 @@
-import readline from 'node:readline/promises';
 import { getUsername, parseInput, showCurrentDir } from './modules/utils.js';
 import { controller } from './modules/controller.js';
 
@@ -7,29 +6,26 @@ try {
 
   console.log(`Welcome to the File Manager, ${username}!`);
   showCurrentDir();
+  process.stdout.write('> ');
 
-  const rl = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout,
-    prompt: '> ',
-  });
-
-  rl.prompt();
-
-  rl.on('line', async (line) => {
-    const parse = parseInput(line);
+  process.stdin.on('data', async (data) => {
+    const parse = parseInput(data.toString());
     if (parse[0] == '.exit') {
-      rl.close();
+      process.exit(1);
       return;
     }
     await controller(parse);
     showCurrentDir();
-    rl.prompt();
+    process.stdout.write('> ');
   });
 
-  rl.on('close', () => {
+  process.on('exit', () => {
     console.log('');
     console.log(`Thank you for using File Manager, ${username}, goodbye!`);
+  });
+
+  process.on('SIGINT', () => {
+    process.exit(1);
   });
 } catch (e) {
   console.error(e.message);

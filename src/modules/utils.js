@@ -44,6 +44,7 @@ function getMember(str) {
 let currentDir = homedir();
 
 export function showCurrentDir() {
+  console.log('');
   console.log(`You are currently in ${currentDir}`);
 }
 
