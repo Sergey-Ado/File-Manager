@@ -5,15 +5,18 @@ import { parse, join } from 'node:path';
 
 export async function cat(pathToFile) {
   if (!pathToFile) throw new Error('Invalid input');
-  pathToFile = getAbsolutePath(pathToFile);
-  await access(pathToFile).catch(() => {
+  try {
+    pathToFile = getAbsolutePath(pathToFile);
+    await access(pathToFile);
+    await new Promise((res, rej) => {
+      const input = createReadStream(pathToFile);
+      input.pipe(process.stdout);
+      input.on('end', () => res());
+      input.on('error', () => rej());
+    });
+  } catch {
     throw new Error('Operation failed');
-  });
-  await new Promise((res) => {
-    const input = createReadStream(pathToFile);
-    input.pipe(process.stdout);
-    input.on('end', () => res());
-  });
+  }
 }
 
 export async function add(newFilename) {
@@ -74,6 +77,9 @@ async function copyRemove(pathToFile, pathToNewDir, del = false) {
         input.on('end', async () => {
           if (del) await remove(pathToFile);
         });
+        input.on('error', () => {
+          throw new Error();
+        });
       }
     );
   } catch {
@@ -85,9 +91,7 @@ export async function rm(pathToFile) {
   if (!pathToFile) throw new Error('Invalid input');
   try {
     pathToFile = getAbsolutePath(pathToFile);
-    await access(pathToFile).then(async () => {
-      await remove(pathToFile);
-    });
+    await remove(pathToFile);
   } catch {
     throw new Error('Operation failed');
   }

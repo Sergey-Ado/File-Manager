@@ -8,7 +8,7 @@ export async function hash(pathToFile) {
   try {
     pathToFile = getAbsolutePath(pathToFile);
     await access(pathToFile);
-    await new Promise((res) => {
+    await new Promise((res, rej) => {
       const readStream = createReadStream(pathToFile);
       const hash = createHash('sha256');
       readStream.pipe(hash);
@@ -16,6 +16,7 @@ export async function hash(pathToFile) {
         console.log(hash.digest('hex'));
         res();
       });
+      readStream.on('error', () => rej());
     });
   } catch {
     throw new Error('Operation failed');

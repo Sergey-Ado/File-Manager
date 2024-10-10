@@ -2,6 +2,7 @@ import * as nav from './navigation.js';
 import * as fs from './file-system.js';
 import { os } from './os.js';
 import { hash } from './hash.js';
+import * as zip from './zip.js';
 
 export async function controller(parse) {
   try {
@@ -15,4 +16,4 @@ export async function controller(parse) {
   }
 }
 
-const functionList = { ...nav, ...fs, os, hash };
+const functionList = { ...nav, ...fs, os, hash, ...zip };
