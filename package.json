@@ -4,14 +4,10 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start:dev": "npx nodemon",
     "start": "node src/index.js"
   },
   "keywords": [],
-  "author": "",
+  "author": "Sergey-Ado",
   "license": "ISC",
-  "description": "",
-  "devDependencies": {
-    "nodemon": "^3.1.7"
-  }
+  "description": ""
 }

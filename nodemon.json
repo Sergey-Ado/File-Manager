@@ -1,4 +1,0 @@
-{
-  "exec": "node src/index.js --username=John_Doe2",
-  "watch": ["src"]
-}
