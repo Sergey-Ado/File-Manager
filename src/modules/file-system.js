@@ -86,6 +86,9 @@ async function copyRemove(pathToFile, pathToNewDir, del = false) {
         input.on('error', () => {
           throw new Error();
         });
+        output.on('error', () => {
+          throw new Error();
+        });
       }
     );
   } catch {

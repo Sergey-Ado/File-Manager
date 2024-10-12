@@ -31,6 +31,7 @@ async function zipFunction(pathToFile, pathToDestination, method = 'compress') {
           input.pipe(bzip).pipe(output);
           input.on('end', () => res());
           input.on('error', () => rej());
+          output.on('error', () => rej());
         });
       }
     );
