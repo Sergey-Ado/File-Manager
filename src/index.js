@@ -12,7 +12,6 @@ try {
     const parse = parseInput(data.toString());
     if (parse[0] == '.exit') {
       process.exit(1);
-      return;
     }
     await controller(parse);
     showCurrentDir();
