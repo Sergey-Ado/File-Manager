@@ -3,8 +3,9 @@ import { access, writeFile, rename, rm as remove } from 'node:fs/promises';
 import { getAbsolutePath, isFilename } from './utils.js';
 import { parse, join } from 'node:path';
 
-export async function cat(pathToFile) {
-  if (!pathToFile) throw new Error('Invalid input');
+export async function cat(pathToFile, secondArg) {
+  if (!pathToFile) throw new Error('Invalid input\nPath_to_file not set');
+  if (secondArg) throw new Error('Invalid input\nToo many arguments');
   try {
     pathToFile = getAbsolutePath(pathToFile);
     await new Promise((res, rej) => {
@@ -21,8 +22,9 @@ export async function cat(pathToFile) {
   }
 }
 
-export async function add(newFilename) {
-  if (!newFilename) throw new Error('Invalid input');
+export async function add(newFilename, secondArg) {
+  if (!newFilename) throw new Error('Invalid input\nNew_filename not set');
+  if (secondArg) throw new Error('Invalid input\nToo many arguments');
   try {
     if (!isFilename(newFilename)) throw new Error();
     const pathToFile = getAbsolutePath(newFilename);
@@ -40,7 +42,8 @@ export async function add(newFilename) {
 }
 
 export async function rn(pathToFile, newFilename) {
-  if (!pathToFile || !newFilename) throw new Error('Invalid input');
+  if (!pathToFile) throw new Error('Invalid input\nPath_to_File not set');
+  if (!newFilename) throw new Error('Invalid input\nNew_filename not set');
   try {
     pathToFile = getAbsolutePath(pathToFile);
     if (!isFilename(newFilename)) throw new Error();
@@ -66,7 +69,8 @@ export async function mv(pathToFile, pathToNewDir) {
 }
 
 async function copyRemove(pathToFile, pathToNewDir, del = false) {
-  if (!pathToFile || !pathToNewDir) throw new Error('Invalid input');
+  if (!pathToFile) throw new Error('Invalid input\nPath_to_file not set');
+  if (!pathToNewDir) throw new Error('Invalid input\nPath_to_new_dir not set');
   try {
     pathToFile = getAbsolutePath(pathToFile);
     pathToNewDir = getAbsolutePath(pathToNewDir);
@@ -99,8 +103,9 @@ async function copyRemove(pathToFile, pathToNewDir, del = false) {
   }
 }
 
-export async function rm(pathToFile) {
-  if (!pathToFile) throw new Error('Invalid input');
+export async function rm(pathToFile, secondArg) {
+  if (!pathToFile) throw new Error('Invalid input\nPath_to_file not set');
+  if (secondArg) throw new Error('Invalid input\nToo many arguments');
   try {
     pathToFile = getAbsolutePath(pathToFile);
     await remove(pathToFile);

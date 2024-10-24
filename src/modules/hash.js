@@ -2,8 +2,9 @@ import { createReadStream } from 'node:fs';
 import { createHash } from 'node:crypto';
 import { getAbsolutePath } from './utils.js';
 
-export async function hash(pathToFile) {
-  if (!pathToFile) throw new Error('Invalid input');
+export async function hash(pathToFile, secondArg) {
+  if (!pathToFile) throw new Error('Invalid input\nPath_to_file not set');
+  if (secondArg) throw new Error('Invalid input\nToo many arguments');
   try {
     pathToFile = getAbsolutePath(pathToFile);
     await new Promise((res, rej) => {

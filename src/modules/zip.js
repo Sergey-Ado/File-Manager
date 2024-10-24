@@ -12,7 +12,9 @@ export async function decompress(pathToFile, pathToDestination) {
 }
 
 async function zipFunction(pathToFile, pathToDestination, method = 'compress') {
-  if (!pathToFile || !pathToDestination) throw new Error('Invalid input');
+  if (!pathToFile) throw new Error('Invalid input\nPath_to_file not set');
+  if (!pathToDestination)
+    throw new Error('Invalid input\nPath_to_destination not set');
   try {
     pathToFile = getAbsolutePath(pathToFile);
     pathToDestination = getAbsolutePath(pathToDestination);

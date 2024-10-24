@@ -1,6 +1,7 @@
 import * as OS from 'node:os';
 
-export function os(key) {
+export function os(key, secondArg) {
+  if (secondArg) throw new Error('Invalid input\nToo many arguments');
   key = key.slice(2);
   switch (key) {
     case 'EOL':
