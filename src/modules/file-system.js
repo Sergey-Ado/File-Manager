@@ -75,6 +75,9 @@ async function copyRemove(pathToFile, pathToNewDir, del = false) {
     pathToFile = getAbsolutePath(pathToFile);
     pathToNewDir = getAbsolutePath(pathToNewDir);
     const pathToNewFile = join(pathToNewDir, parse(pathToFile).base);
+    await access(pathToFile).catch(() => {
+      throw new Error();
+    });
     await access(pathToNewDir).catch(() => {
       throw new Error();
     });
